@@ -1,0 +1,38 @@
+[
+  {
+    "type": "REGISTER",
+    "user": "sdegesghg",
+    "email": "weedsdeww@gmail.com",
+    "time": "2026-10-08T02:58:25.046Z"
+  },
+  {
+    "type": "LOGIN",
+    "user": "sdegesghg",
+    "email": "weedsdeww@gmail.com",
+    "time": "2026-10-08T02:59:00.990Z"
+  },
+  {
+    "type": "LOGOUT",
+    "user": "sdegesghg",
+    "email": "weedsdeww@gmail.com",
+    "time": "2026-10-08T03:02:32.252Z"
+  },
+  {
+    "type": "REGISTER",
+    "user": "ali",
+    "email": "ali@gmail.com",
+    "time": "2026-10-08T03:02:47.821Z"
+  },
+  {
+    "type": "LOGIN",
+    "user": "ali",
+    "email": "ali@gmail.com",
+    "time": "2026-10-08T03:02:53.238Z"
+  },
+  {
+    "type": "LOGIN",
+    "user": "ali",
+    "email": "ali@gmail.com",
+    "time": "2026-10-09T03:17:34.759Z"
+  }
+]

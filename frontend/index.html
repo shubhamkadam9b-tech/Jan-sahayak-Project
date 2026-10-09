@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jan Sahayak | Login</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0} body{font-family:Arial,sans-serif;background:#f5f7fb;color:#1f2937}
+nav{background:#123c69;color:#fff;padding:18px 8%;display:flex;justify-content:space-between;align-items:center}
+.hero{background:linear-gradient(135deg,#123c69,#1d70a2);color:#fff;text-align:center;padding:55px 20px}
+.hero h1{font-size:40px;margin-bottom:12px}.hero p{font-size:17px}
+.auth-screen{min-height:100vh;background:#f5f7fb;display:flex;align-items:center;justify-content:center;padding:30px}
+.auth-card{width:100%;max-width:420px;background:#fff;padding:30px;border-radius:16px;box-shadow:0 8px 30px #0001}
+.auth-card h2{text-align:center;margin-bottom:8px;color:#123c69}.auth-card .sub{text-align:center;color:#777;margin-bottom:20px}
+input,select{width:100%;padding:13px;border:1px solid #ddd;border-radius:8px;margin:7px 0;font-size:15px}
+button{background:#123c69;color:#fff;border:0;padding:12px 18px;border-radius:8px;cursor:pointer;font-weight:bold}
+button:hover{opacity:.9}.full{width:100%;margin-top:10px}.link{text-align:center;margin-top:16px;color:#123c69;cursor:pointer}
+.message{text-align:center;margin-top:12px;font-size:14px;min-height:20px}
+#app{display:none}.container{width:84%;max-width:1100px;margin:35px auto}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.userbox{background:#fff;padding:12px 16px;border-radius:10px;box-shadow:0 3px 12px #0001}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:25px}.stat{background:#fff;padding:20px;border-radius:12px;box-shadow:0 3px 12px #0001}.stat b{font-size:28px;color:#123c69;display:block}
+.search-box{background:#fff;padding:25px;border-radius:12px;box-shadow:0 4px 15px #0001;margin-bottom:30px}.search-box button{background:#f59e0b;color:#111}
+.scheme{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}.card{background:#fff;padding:25px;border-radius:12px;box-shadow:0 4px 15px #0001}.category{display:inline-block;background:#e0f2fe;color:#0369a1;padding:5px 10px;border-radius:20px;font-size:12px;margin-bottom:12px}.card h3{margin-bottom:10px}.card p{color:#6b7280;line-height:1.5;margin-bottom:18px}.details-btn{display:inline-block;background:#123c69;color:#fff;padding:10px 16px;border-radius:7px;text-decoration:none}
+.activity{background:#fff;padding:20px;border-radius:12px;margin-top:25px;box-shadow:0 3px 12px #0001}.activity li{list-style:none;padding:9px 0;border-bottom:1px solid #eee;font-size:14px}
+footer{margin-top:60px;background:#123c69;color:#fff;text-align:center;padding:25px}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}.container{width:92%}.hero h1{font-size:30px}}
+</style>
+</head>
+<body>
+
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <h2>🇮🇳 Jan Sahayak</h2>
+    <p class="sub" id="authSubtitle">Login to continue</p>
+
+    <div id="loginForm">
+      <input id="loginEmail" type="email" placeholder="Email">
+      <input id="loginPassword" type="password" placeholder="Password">
+      <button class="full" onclick="login()">Login</button>
+      <p class="link" onclick="showRegister()">New user? Register here</p>
+    </div>
+
+    <div id="registerForm" style="display:none">
+      <input id="regName" type="text" placeholder="Full name">
+      <input id="regEmail" type="email" placeholder="Email">
+      <input id="regPassword" type="password" placeholder="Password (min 6 characters)">
+      <button class="full" onclick="registerUser()">Register</button>
+      <p class="link" onclick="showLogin()">Already registered? Login</p>
+    </div>
+    <div id="authMessage" class="message"></div>
+  </div>
+</div>
+
+<div id="app">
+<nav><h2>🇮🇳 Jan Sahayak</h2><div><a href="/admin.html" style="color:#fff;margin-right:15px;text-decoration:none">Admin</a><button onclick="logout()">Logout</button></div></nav>
+<section class="hero"><h1>Find Welfare Schemes Easily</h1><p>A simple digital guide to help citizens discover, understand and access public welfare schemes.</p></section>
+
+<main class="container">
+  <div class="topbar">
+    <div class="userbox">Welcome, <b id="userName"></b> (<span id="userEmail"></span>)</div>
+  </div>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search scheme e.g. scholarship, health, farmers...">
+    <select id="categorySelect">
+      <option value="All">All Categories</option><option value="Education">Education</option>
+      <option value="Healthcare">Healthcare</option><option value="Women & Child">Women & Child</option>
+      <option value="Farmers">Farmers</option><option value="Employment">Employment</option>
+      <option value="Financial Assistance">Financial Assistance</option>
+    </select>
+    <button onclick="loadscheme()">Search scheme</button>
+  </div>
+
+  <h2>Available Schemes</h2>
+  <div id="status" style="text-align:center;margin:20px;color:#666">Loading schemes...</div>
+  <div class="scheme" id="schemeContainer"></div>
+
+</main>
+<footer><p>Jan Sahayak © 2026</p><p>Digital Guide for Public Welfare Schemes</p></footer>
+</div>
+
+<script>
+const API="";
+function showRegister(){loginForm.style.display="none";registerForm.style.display="block";authSubtitle.innerText="Create your account";authMessage.innerText=""}
+function showLogin(){registerForm.style.display="none";loginForm.style.display="block";authSubtitle.innerText="Login to continue";authMessage.innerText=""}
+function msg(text,ok=false){authMessage.innerText=text;authMessage.style.color=ok?"green":"#c00"}
+
+async function registerUser(){
+  const body={name:regName.value,email:regEmail.value,password:regPassword.value};
+  try{
+    const r=await fetch(API+"/api/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+    const d=await r.json(); msg(d.message,r.ok);
+    if(r.ok){setTimeout(showLogin,600)}
+  }catch(e){msg("Server connection failed.")}
+}
+async function login(){
+  try{
+    const r=await fetch(API+"/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:loginEmail.value,password:loginPassword.value})});
+    const d=await r.json();
+    if(!r.ok){msg(d.message);return}
+    localStorage.setItem("janToken",d.token);
+    localStorage.setItem("janUser",JSON.stringify(d.user));
+    openApp(d.user);
+  }catch(e){msg("Server connection failed.")}
+}
+function openApp(user){
+  authScreen.style.display="none";app.style.display="block";
+  userName.innerText=user.name;userEmail.innerText=user.email;
+  loadscheme();
+}
+async function logout(){
+  const token=localStorage.getItem("janToken");
+  await fetch(API+"/api/logout",{method:"POST",headers:{Authorization:"Bearer "+token}}).catch(()=>{});
+  localStorage.removeItem("janToken");localStorage.removeItem("janUser");
+  location.reload();
+}
+async function loadscheme(){
+  const search=searchInput.value,category=categorySelect.value;
+  let url="/api/scheme?"; if(search)url+=`search=${encodeURIComponent(search)}&`;if(category!=="All")url+=`category=${encodeURIComponent(category)}`;
+  try{
+    const r=await fetch(url),schemes=await r.json(),container=schemeContainer;container.innerHTML="";
+    status.innerText=schemes.length?`${schemes.length} scheme(s) found`:"No scheme found.";
+    schemes.forEach(s=>container.innerHTML+=`<div class="card"><span class="category">${s.category}</span><h3>${s.name}</h3><p>${s.description}</p><a class="details-btn" href="${s.officialUrl}" target="_blank">Official Website →</a></div>`);
+  }catch(e){status.innerText="Unable to connect to backend server."}
+}
+window.onload=()=>{
+  const token=localStorage.getItem("janToken"),user=JSON.parse(localStorage.getItem("janUser")||"null");
+  if(token&&user) openApp(user);
+}
+</script>
+</body>
+</html>

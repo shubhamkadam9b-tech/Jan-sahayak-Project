@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jan Sahayak | Admin</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#1f2937}nav{background:#123c69;color:#fff;padding:18px 8%;display:flex;justify-content:space-between;align-items:center}nav a{color:#fff;text-decoration:none;margin-right:15px}.wrap{width:90%;max-width:1100px;margin:35px auto}.card{background:#fff;padding:25px;border-radius:14px;box-shadow:0 4px 15px #0001;margin-bottom:20px}.login{max-width:420px;margin:70px auto}.login h2{text-align:center;color:#123c69}input{width:100%;padding:13px;margin:7px 0;border:1px solid #ddd;border-radius:8px;font-size:15px}button{background:#123c69;color:#fff;border:0;padding:12px 18px;border-radius:8px;cursor:pointer;font-weight:bold}.full{width:100%;margin-top:10px}.msg{text-align:center;min-height:20px;margin-top:12px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}.stat{background:#fff;padding:22px;border-radius:12px;box-shadow:0 3px 12px #0001}.stat b{display:block;font-size:32px;color:#123c69;margin-bottom:5px}.activity li{list-style:none;padding:11px 0;border-bottom:1px solid #eee;font-size:14px}.activity ul{padding:0}@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<nav><h2>🇮🇳 Jan Sahayak — Admin</h2><div><a href="/">User Website</a><button id="logoutBtn" onclick="adminLogout()" style="display:none">Logout</button></div></nav>
+<div id="loginScreen" class="wrap"><div class="card login"><h2>Admin Login</h2><input id="email" type="email" placeholder="Admin email"><input id="password" type="password" placeholder="Admin password"><button class="full" onclick="adminLogin()">Login</button><div id="msg" class="msg"></div></div></div>
+<div id="dashboard" class="wrap" style="display:none"><div class="card"><h1>Admin Dashboard</h1><p>Only the authenticated administrator can view these numbers and activity.</p></div><div class="stats"><div class="stat"><b id="registered">0</b>Registered Users</div><div class="stat"><b id="registrations">0</b>Total Registrations</div><div class="stat"><b id="logins">0</b>Total Logins</div><div class="stat"><b id="logouts">0</b>Total Logouts</div></div><div class="card activity" style="margin-top:20px"><h2>Recent Activity</h2><ul id="activity"><li>Loading...</li></ul></div></div>
+<script>
+const tokenKey="janAdminToken";
+function showMsg(t,ok=false){msg.textContent=t;msg.style.color=ok?"green":"#c00"}
+async function adminLogin(){try{const r=await fetch('/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email.value,password:password.value})});const d=await r.json();if(!r.ok)return showMsg(d.message);localStorage.setItem(tokenKey,d.token);showDashboard()}catch(e){showMsg('Server connection failed.')}}
+async function showDashboard(){const token=localStorage.getItem(tokenKey);try{const r=await fetch('/api/stats',{headers:{Authorization:'Bearer '+token}});if(!r.ok){localStorage.removeItem(tokenKey);return showLogin()}const d=await r.json();loginScreen.style.display='none';dashboard.style.display='block';logoutBtn.style.display='inline-block';registered.textContent=d.registeredUsers;registrations.textContent=d.totalRegistrations;logins.textContent=d.totalLogins;logouts.textContent=d.totalLogouts;activity.innerHTML=d.recentActivity.length?d.recentActivity.map(a=>`<li><b>${a.type}</b> — ${a.user} (${a.email}) — ${new Date(a.time).toLocaleString()}</li>`).join(''):'<li>No activity yet.</li>'}catch(e){showMsg('Unable to load admin dashboard.')}}
+function showLogin(){loginScreen.style.display='block';dashboard.style.display='none';logoutBtn.style.display='none'}
+async function adminLogout(){const token=localStorage.getItem(tokenKey);await fetch('/api/admin/logout',{method:'POST',headers:{Authorization:'Bearer '+token}}).catch(()=>{});localStorage.removeItem(tokenKey);showLogin()}
+window.onload=()=>{if(localStorage.getItem(tokenKey))showDashboard();else showLogin()}
+</script>
+</body>
+</html>

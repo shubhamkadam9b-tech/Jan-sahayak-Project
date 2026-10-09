@@ -1,0 +1,20 @@
+[
+  {
+    "id": "7bedebd6-edbc-4cac-8e48-2f5b7f5f97f3",
+    "name": "sdegesghg",
+    "email": "weedsdeww@gmail.com",
+    "salt": "b17b10f1d127c368d65c1877ab78e4ce",
+    "passwordHash": "68d5d688285afd4f89c498a6185c57b622d5b2f210ec85afebdf2e0750f5ca10656fc311939563049d67903a48016539e2e0cdae03fd878611f6b05cdba04ac1",
+    "token": null,
+    "createdAt": "2026-10-08T02:58:25.046Z"
+  },
+  {
+    "id": "8ba38fb2-13a5-4bc4-82ed-c54a50d885dc",
+    "name": "ali",
+    "email": "ali@gmail.com",
+    "salt": "4c50aac77cd3d8c4885e478b5c62853e",
+    "passwordHash": "b15a77c0d261e0e3e700ae167328c355a1ebc8226587554aad9d72396de8fd6efe4dc8d50ce0cd920fdc980c691d8a24a7ab567557921b75119e2b1b4a3684a5",
+    "token": "77234a2226e56db304dbf5e3c2518998adb00e4ed0f15216effd6e4865a5dce0",
+    "createdAt": "2026-10-08T03:02:47.820Z"
+  }
+]

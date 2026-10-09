@@ -1,0 +1,20 @@
+JAN SAHAYAK ADMIN LOGIN
+
+Admin page: http://localhost:5000/admin.html
+
+Default admin email:
+admin@jansahayak.local
+
+Default admin password:
+Admin@123
+
+For your final college submission, change the credentials by setting these environment variables before starting the server:
+Windows CMD:
+set ADMIN_EMAIL=your-email@example.com
+set ADMIN_PASSWORD=your-strong-password
+npm start
+
+PowerShell:
+$env:ADMIN_EMAIL="your-email@example.com"
+$env:ADMIN_PASSWORD="your-strong-password"
+npm start
